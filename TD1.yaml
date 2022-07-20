@@ -1,0 +1,336 @@
+openapi: 3.0.1
+info:
+  title: STD21101 API
+  description: 'Global description of my API'
+  version: 1.0.0
+servers:
+ - url: https://STD21101.com
+tags: 
+ - name: Students
+   
+ - name: Courses
+paths:
+  /students:
+    get:
+      tags:
+        - Students
+      operationId: getStudents
+      summary: Get all students
+      description: Get all students with details
+      responses:
+        200: 
+          description: List of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Student'
+        400:
+          description: Bad request
+    post: 
+      tags:
+        - Students
+      operationId: createStudent
+      summary : Create new student
+      description: Create new student
+      requestBody:
+        description: Student to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStudent'
+        required: true
+      responses:
+        200:
+          description: List of students
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        400:
+          description: Bad request  
+    put:
+      tags: 
+        - Students
+      summary: Update an existing student
+      description : Update existing student
+      requestBody:
+        description: Student to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      responses: 
+        200:
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        400:
+          description: Bad request
+    
+    patch:
+      tags:
+        - Students
+      operationId: patchStudent
+      summary: Patch an existing student
+      description: Patch some info from a student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      responses:
+        200:
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        400:
+          description: Bad request
+  
+  /Students/{Id}:
+    get:
+      tags:
+        - Students
+      operationId: GetStudentsById
+      description: find a student by Id
+      summary: return a single student
+      parameters:
+      - name: Id
+        in: path
+        description: ID of Students to return
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        200:
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        400:
+          description: Bad request
+      
+    delete:
+        tags:
+          - Students
+        operationId: DeleteStudentById
+        description: delete a student by Id
+        summary: delete a single student
+        parameters:
+        - name: Id
+          in: path
+          description: ID of student to be deleted
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        responses:
+          200:
+            description: Successful Operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Student'
+          400: 
+            description: Bad request
+            
+  /Courses:
+    get:
+        tags:
+          - Courses
+        operationId: GetCourse
+        summary: Get all Courses
+        description: Get All courses
+        responses:
+          200:
+            description: List Of all Courses
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Course'
+          400: 
+            description: Bad request
+        
+    post:
+          tags:
+            - Courses
+          operationId: CreateCourse
+          summary: Create a new Course
+          description: Create a new Course
+          requestBody:
+            description: Course to be created
+            content: 
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/CreateCourse'
+            required: true
+          responses:
+            200:
+              description: List of Courses
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Course'
+            400:
+              description: Bad request
+    put:
+          tags:
+            - Courses
+          operationId: Update an existing Course
+          summary: Update an existing course
+          description: Modify an existing Course
+          requestBody:
+            description: Course to be modified
+            content:
+              application/json: 
+                schema:
+                  $ref: '#/components/schemas/Course'
+            required: true
+          responses:
+            200:
+              description: Successful Operation
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Course'
+            400: 
+              description: Bad request
+    patch:
+          tags:
+            - Courses
+          operationId: PatchCourse
+          summary: Patch a Course
+          description: Patch a Course
+          requestBody:
+            description: Course to be Patched
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Course'
+            required: true
+          responses:
+            200:
+              description: Successful Operation
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Course'
+            400:
+              description: Bad request
+              
+  /Courses/{Id}:
+    get:
+          tags:
+            - Courses
+          operationId: GetCourseById
+          description: find a Course by Id
+          summary: return a single Course
+          parameters:
+          - name: Id
+            in: path
+            description: ID of Course to return
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Course'
+          responses:
+            200:
+              description: Successful Operation
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Course'
+            400:
+              description: Bad request
+    delete:
+          tags:
+            - Courses
+          description: Delete a Course by Id
+          summary: Delete a single Course
+          parameters:
+          - name: Id
+            in: path
+            description: Id of Course to delete
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Course'
+          responses:
+            200:
+              description : Successful Operation
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Course'
+            400:
+              description: Bad request
+components:
+  schemas:
+    CreateStudent:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Rakoto"
+        birth_date:
+          type: string
+          format: date
+          example: "2022-01-01"
+        address:
+          type: string
+          example: "Ivandry"
+        phoneNumber:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+    Student:
+      allOf:
+        - $ref: '#/components/schemas/CreateStudent'
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+    PhoneNumber:
+      type: object
+      properties:
+        number:
+          type: string
+          example: "340667601"
+        country_code:
+          type: string
+          example: "+261"
+    CreateCourse:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "PROG"
+        teacher:
+          type: string
+          example: "Alex"
+    Course:
+      allOf:
+        - $ref: '#/components/schemas/CreateCourse'
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 14
+        
+        
