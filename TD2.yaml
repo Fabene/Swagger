@@ -4,7 +4,7 @@ info:
   description: 'Global description of my API'
   version: 1.0.0
 servers:
- - url: https://STD2110.com
+ - url: https://STD21101.com
 tags: 
  - name: Salle_A
    
