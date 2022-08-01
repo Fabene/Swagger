@@ -1,18 +1,20 @@
 openapi: 3.0.1
 info:
-  title: STD21101 API
-  description: "This is API's description of the management of a movie theater"
+  title: STD21101API
+  description: This is API's description of the management of a movie theater
   version: 1.0.0
 servers:
- - url: https://STD21101.com
- - url: https://STD21XXX.com
-tags: 
- - name: Films
-   description: Everything about films
- - name: Projections
-   description: Everything about projections
+  - url: https://STD21101.com
+  - url: https://STD21XXX.com
+tags:
+  - name: Films
+    description: Everything about films
+  - name: Projections
+    description: Everything about projections
+  - name: Calendar
+    description: Everything about calendar
 paths:
- /films:
+  /films:
     post:
       tags:
         - Films
@@ -22,27 +24,26 @@ paths:
       requestBody:
         content:
           application/json:
-           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/CreateFilm'
-
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateFilm'
       responses:
-        200: 
+        '200':
           description: Film to be created
           content:
             application/json:
               schema:
                 type: array
-                items: 
+                items:
                   $ref: '#/components/schemas/Film'
-        400:
+        '400':
           description: Bad request
-    get: 
+    get:
       tags:
         - Films
       operationId: getFilms
-      summary : Get all films
+      summary: Get all films
       description: Get all films with details
       parameters:
         - name: page
@@ -50,7 +51,7 @@ paths:
           schema:
             type: integer
       responses:
-        200:
+        '200':
           description: List of films
           content:
             application/json:
@@ -58,8 +59,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Film'
-        400:
-          description: Bad request  
+        '400':
+          description: Bad request
     put:
       tags:
         - Films
@@ -74,17 +75,16 @@ paths:
               $ref: '#/components/schemas/Film'
         required: true
       responses:
-        200:
+        '200':
           description: Successful Updated
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Film'
-                
-        400:
-          description: Bad request 
+        '400':
+          description: Bad request
     patch:
       tags:
         - Films
@@ -99,21 +99,27 @@ paths:
               $ref: '#/components/schemas/CreateProjection'
         required: true
       responses:
-        200:
+        '200':
           description: Successful updated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateProjection'
-        400:
+        '400':
           description: Bad request
     delete:
-      tags: 
+      tags:
         - Films
       operationId: deletefilm
       summary: Delete films
       description: Delete films
-      requestBody: 
+      parameters:
+        - name: Delete films
+          in: path
+          schema:
+            type: integer
+          required: true
+      requestBody:
         description: Delete Films by ID
         content:
           application/json:
@@ -121,13 +127,34 @@ paths:
               type: array
               items:
                 $ref: '#/components/schemas/DeleteFilm'
-
       responses:
-        200:
+        '200':
           description: Successful deleted
-        400:
-          description: Bad request    
- /films/Category:
+        '400':
+          description: Bad request
+  /films/{id}:
+    get:
+      tags:
+        - Films
+      operationId: id
+      summary: Get film
+      description: Get film with details
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Details of film
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Film'
+        '400':
+          description: Bad request
+  /films/Category:
     get:
       tags:
         - Films
@@ -136,12 +163,11 @@ paths:
       description: Get category Films
       parameters:
         - name: Category films
-          in: path
+          in: query
           schema:
             type: string
-          required: true
       responses:
-        200:
+        '200':
           description: Category of films
           content:
             application/json:
@@ -149,9 +175,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Category'
-        400:
+        '400':
           description: Bad request
- /projections:
+  /projections:
     post:
       tags:
         - Projections
@@ -162,20 +188,20 @@ paths:
         description: New projections
         content:
           application/json:
-           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/CreateFilm'
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Film'
       responses:
-        200: 
+        '200':
           description: Projection to be created
           content:
             application/json:
               schema:
                 type: array
-                items: 
-                  $ref: '#/components/schemas/Projection'
-        400:
+                items:
+                  $ref: '#/components/schemas/CreateProjection'
+        '400':
           description: Bad request
     get:
       tags:
@@ -183,14 +209,20 @@ paths:
       operationId: getprojection
       summary: Get all projections
       description: get all projection with details
+      parameters:
+        - name: idProjection
+          in: path
+          schema:
+            type: integer
+          required: true
       responses:
-        200: 
+        '200':
           description: Details of projection
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProjectionFilm'
-        400:
+        '400':
           description: Bad request
     put:
       tags:
@@ -208,17 +240,16 @@ paths:
                 $ref: '#/components/schemas/CreateProjection'
         required: true
       responses:
-        200:
-          description: Successful Updating 
+        '200':
+          description: Successful Updating
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Projection'
-                
-        400:
-          description: Bad request  
+                  $ref: '#/components/schemas/CreateProjection'
+        '400':
+          description: Bad request
     patch:
       tags:
         - Projections
@@ -230,23 +261,29 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Projection'
+              $ref: '#/components/schemas/CreateProjection'
         required: true
       responses:
-        200:
+        '200':
           description: Successful updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Projection'
-        400:
-          description: Bad request          
+                $ref: '#/components/schemas/CreateProjection'
+        '400':
+          description: Bad request
     delete:
-      tags: 
+      tags:
         - Projections
       operationId: deleteprojection
       summary: Delete projections
       description: Delete projections
+      parameters:
+        - name: Delete projection
+          in: path
+          schema:
+            type: integer
+          required: true
       requestBody:
         description: Delete projection by ID
         content:
@@ -254,67 +291,162 @@ paths:
             schema:
               $ref: '#/components/schemas/DeleteProjection'
       responses:
-        200:
+        '200':
           description: Successful Delete
-        400:
-          description: Bad request  
- /films/{id}:
-    get: 
+        '400':
+          description: Bad request
+  /calendar:
+    get:
       tags:
-        - Films
-      operationId: id
-      summary : Get film
-      description: Get film with details
+        - Calendar
+      operationId: getcalendar
+      summary: Get all calendar
+      description: get all calendar with details
       parameters:
-        - name: id
+        - name: idCalendar
           in: path
           schema:
             type: integer
           required: true
       responses:
-        200:
-          description: Details of film
+        '200':
+          description: Details of calendar
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Film'
-        400:
-          description: Bad request  
-
+                $ref: '#/components/schemas/Calendar'
+        '400':
+          description: Bad request
+    post:
+      tags:
+        - Calendar
+      operationId: postcalendar
+      summary: Create new calendar
+      description: Create new calendar
+      requestBody:
+        description: New calendar
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CreateCalendar'
+      responses:
+        '200':
+          description: Projection to be created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Calendar'
+        '400':
+          description: Bad request
+    put:
+      tags:
+        - Calendar
+      operationId: putcalendar
+      summary: Update existing calendar
+      description: Change all information of calendar
+      requestBody:
+        description: Projection to be updated
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Calendar'
+        required: true
+      responses:
+        '200':
+          description: Successful Updating
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Calendar'
+        '400':
+          description: Bad request
+    patch:
+      tags:
+        - Calendar
+      operationId: patchcalendar
+      summary: Update existing calendar
+      description: Change some information of calendar
+      requestBody:
+        description: Projection to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Calendar'
+        required: true
+      responses:
+        '200':
+          description: Successful updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Calendar'
+        '400':
+          description: Bad request
+    delete:
+      tags:
+        - Calendar
+      operationId: deletecalendar
+      summary: Delete calendar
+      description: Delete calendar
+      parameters:
+        - name: idCalendar
+          in: path
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        description: Delete calendar by ID
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteCalendar'
+      responses:
+        '200':
+          description: Successful Delete
+        '400':
+          description: Bad request
 components:
   schemas:
     CreateFilm:
       type: object
       properties:
+        idFilm:
+          type: integer
         title:
           type: string
-          example: "Titanic"
+          example: Titanic
         release_date:
           type: string
           format: date
-          example: "2022-01-01"
+          example: '2022-01-01'
         resume:
           type: string
-          example: "Once upon a time..."
+          example: Once upon a time...
         director:
           type: string
-          example: "Johnny Clark"
+          example: Johnny Clark
         duration:
           type: string
           format: date-time
     Film:
       type: object
       properties:
-        category: 
+        category:
           type: string
-          example: "Action"
-        id:
-          type: integer
+          example: Action
       allOf:
         - $ref: '#/components/schemas/CreateFilm'
     Hall:
       type: object
-      properties: 
+      properties:
         number:
           type: string
           example: A
@@ -324,9 +456,11 @@ components:
     CreateProjection:
       type: object
       properties:
+        idProjection:
+          type: integer
         idFilm:
           type: integer
-        hallNumber: 
+        hallNumber:
           type: string
           enum:
             - A
@@ -334,29 +468,20 @@ components:
         diffusion:
           type: string
           format: date-time
-    Projection:
-      type: object
-      properties:
-        id:
-          type: integer
-      allOf:
-        - $ref: '#/components/schemas/CreateProjection'
     ProjectionFilm:
       type: object
       properties:
-        id:
-          type: integer
-        diffusion:
-          type: string
-          format: date-time
         film:
           type: object
           allOf:
-          - $ref: '#/components/schemas/Film'
+            - $ref: '#/components/schemas/Film'
         hall:
           type: object
           allOf:
             - $ref: '#/components/schemas/Hall'
+        Projection:
+          allOf:
+            - $ref: '#/components/schemas/CreateProjection'
     DeleteFilm:
       type: object
       properties:
@@ -374,5 +499,35 @@ components:
           type: string
         idFilm:
           type: integer
-
-      
+    Day:
+      type: object
+      properties:
+        day:
+          type: string
+          format: date
+      allOf:
+        - $ref: '#/components/schemas/CreateProjection'
+    Week:
+      type: object
+      properties:
+        Week:
+          type: array
+          example: first week
+      allOf:
+        - $ref: '#/components/schemas/Day'
+    CreateCalendar:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Week'
+    Calendar:
+      type: object
+      properties:
+        idCalendar:
+          type: integer
+      allOf:
+        - $ref: '#/components/schemas/CreateCalendar'
+    DeleteCalendar:
+      type: object
+      properties:
+        idCalendar:
+          type: integer
